@@ -2,11 +2,17 @@ package models;
 
 import java.util.Objects;
 
-public abstract class Department {
+public class Department {
     private String name;
     private String description;
     private int noOfEmployees;
     private int id;
+
+    public Department(String name, String description, int noOfEmployees) {
+        this.name = name;
+        this.description = description;
+        this.noOfEmployees = noOfEmployees;
+    }
 
     public int getId() {
         return id;
