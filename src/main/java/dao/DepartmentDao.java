@@ -6,5 +6,7 @@ public interface DepartmentDao {
 
     void save(Department department);
 
+
+
     void clearAll();
 }
