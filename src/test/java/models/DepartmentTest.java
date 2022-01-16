@@ -26,7 +26,7 @@ class DepartmentTest {
     }
 
     public Department setUpDepartment() {
-        Department testDpeartment = new Department("Human Resource", "akjsdjkfh", 15);
-        return testDpeartment;
+        Department testDepartment = new Department("Human Resource", "akjsdjkfh", 15);
+        return testDepartment;
     }
 }
