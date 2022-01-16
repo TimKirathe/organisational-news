@@ -1,5 +1,6 @@
 package dao;
 
+import models.Department;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,6 +33,14 @@ class Sql2oDepartmentDaoTest {
 
     @Test
     void departmentGetsSavedAndReturnedProperlyFromDB() {
+        Department testDepartment = setUpDepartment();
+        sql2oDepartmentDao.save(testDepartment);
+        Department returnedDepartment = sql2oDepartmentDao.findById(testDepartment.getId());
+        assertTrue(testDepartment.equals(returnedDepartment));
+    }
 
+    public Department setUpDepartment() {
+        Department testDepartment = new Department("Human Resource", "akjsdjkfh", 15);
+        return testDepartment;
     }
 }
