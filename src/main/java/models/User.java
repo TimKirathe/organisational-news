@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class User {
     private String name;
-    private String department;
+    private int departmentId;
     private int id;
     private String position;
     private int yearsActive;
 
-    public User(String name, String department, String position, int yearsActive) {
+    public User(String name, int departmentId, String position, int yearsActive) {
         this.name = name;
-        this.department = department;
+        this.departmentId = departmentId;
         this.position = position;
         this.yearsActive = yearsActive;
     }
@@ -28,8 +28,8 @@ public class User {
         return yearsActive;
     }
 
-    public String getDepartment() {
-        return department;
+    public int getDepartmentId() {
+        return departmentId;
     }
 
     public String getPosition() {
@@ -45,11 +45,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && yearsActive == user.yearsActive && name.equals(user.name) && department.equals(user.department) && position.equals(user.position);
+        return departmentId == user.departmentId && id == user.id && yearsActive == user.yearsActive && name.equals(user.name) && position.equals(user.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, department, id, position, yearsActive);
+        return Objects.hash(name, departmentId, id, position, yearsActive);
     }
 }

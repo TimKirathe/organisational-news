@@ -26,7 +26,7 @@ class UserTest {
     }
 
     public User setUpUser() {
-        User testUser = new User("Timothy", "Tech", "Employee", 1);
+        User testUser = new User("Timothy", 1, "Employee", 1);
         return testUser;
     }
 
