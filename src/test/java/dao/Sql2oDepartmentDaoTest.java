@@ -2,6 +2,7 @@ package dao;
 
 import models.Department;
 import models.News;
+import models.User;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Sql2oDepartmentDaoTest {
     private static Sql2oDepartmentDao sql2oDepartmentDao;
     private static Sql2oNewsDao sql2oNewsDao;
+    private static Sql2oUserDao sql2oUserDao;
     private static Connection conn;
 
     @BeforeAll
@@ -24,6 +26,7 @@ class Sql2oDepartmentDaoTest {
         Sql2o sql2o = new Sql2o(connectionString, null, null);
         sql2oDepartmentDao = new Sql2oDepartmentDao(sql2o);
         sql2oNewsDao = new Sql2oNewsDao(sql2o);
+        sql2oUserDao = new Sql2oUserDao(sql2o);
         conn = sql2o.open();
     }
 
@@ -31,6 +34,7 @@ class Sql2oDepartmentDaoTest {
     void afterEach() {
         sql2oDepartmentDao.clearAll();
         sql2oNewsDao.clearAll();
+        sql2oUserDao.clearAll();
         sql2oDepartmentDao.clearAllNewsAndDepartments();
         sql2oDepartmentDao.clearAllUsersAndDepartments();
     }
@@ -67,6 +71,27 @@ class Sql2oDepartmentDaoTest {
         savedNews.add(testNews2);
         savedNews.add(testNews3);
         assertEquals(savedNews, returnedNews);
+    }
+
+    @Test
+    void allUsersInDepartmentGetsSavedInDbAndReturned() {
+        List<User> savedUsers = new ArrayList<>();
+        Department testDepartment = setUpDepartment();
+        sql2oDepartmentDao.save(testDepartment);
+        User testUser = new User("Timothy", testDepartment.getId(), "Employee", 1);
+        User testUser2 = new User("Alvin", testDepartment.getId(), "Employee", 2);
+        User testUser3 = new User("MK", testDepartment.getId(), "Employee", 3);
+        sql2oUserDao.save(testUser);
+        sql2oUserDao.save(testUser2);
+        sql2oUserDao.save(testUser3);
+        sql2oDepartmentDao.saveUsersAndDepartment(testDepartment, testUser);
+        sql2oDepartmentDao.saveUsersAndDepartment(testDepartment, testUser2);
+        sql2oDepartmentDao.saveUsersAndDepartment(testDepartment, testUser3);
+        List<User> returnedUsers = sql2oDepartmentDao.getAllDepartmentUsers(testDepartment.getId());
+        savedUsers.add(testUser);
+        savedUsers.add(testUser2);
+        savedUsers.add(testUser3);
+        assertEquals(savedUsers, returnedUsers);
     }
 
     public Department setUpDepartment() {

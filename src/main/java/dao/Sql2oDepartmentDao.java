@@ -89,7 +89,7 @@ public class Sql2oDepartmentDao implements DepartmentDao {
     @Override
     public void saveUsersAndDepartment(Department department, User user) {
         try(Connection con = sql2o.open()) {
-            String sql = "INSERT INTO departments_users (departmentId, userId) VALUES (:departmentId, :userId)";
+            String sql = "INSERT INTO departments_users (departmentid, userid) VALUES (:departmentId, :userId)";
             con.createQuery(sql)
                     .addParameter("departmentId", department.getId())
                     .addParameter("userId", user.getId())
@@ -102,7 +102,7 @@ public class Sql2oDepartmentDao implements DepartmentDao {
     @Override
     public List<User> getAllDepartmentUsers(int departmentId) {
         List<User> departmentUsers = new ArrayList<>();
-        String sql1 = "SELECT * FROM departments_users WHERE departmentId = :departmentId";
+        String sql1 = "SELECT userid FROM departments_users WHERE departmentid = :departmentId";
         try(Connection con = sql2o.open()) {
             List<Integer> userIds = con.createQuery(sql1)
                     .addParameter("departmentId", departmentId)
