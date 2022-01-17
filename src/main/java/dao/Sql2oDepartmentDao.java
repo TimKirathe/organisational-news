@@ -2,6 +2,7 @@ package dao;
 
 import models.Department;
 import models.News;
+import models.User;
 import org.sql2o.*;
 
 import java.util.ArrayList;
@@ -83,6 +84,38 @@ public class Sql2oDepartmentDao implements DepartmentDao {
             System.out.println(e);
         }
         return departmentNews;
+    }
+
+    @Override
+    public void saveUsersAndDepartment(Department department, User user) {
+        try(Connection con = sql2o.open()) {
+            String sql = "INSERT INTO departments_users (departmentId, userId) VALUES (:departmentId, :userId)";
+            con.createQuery(sql)
+                    .addParameter("departmentId", department.getId())
+                    .addParameter("userId", user.getId())
+                    .executeUpdate();
+        } catch (Sql2oException e) {
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public List<User> getAllDepartmentUsers(int departmentId) {
+        List<User> departmentUsers = new ArrayList<>();
+        String sql1 = "SELECT * FROM departments_users WHERE departmentId = :departmentId";
+        try(Connection con = sql2o.open()) {
+            List<Integer> userIds = con.createQuery(sql1)
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(Integer.class);
+
+            for (Integer userId : userIds) {
+                String sql2 = "SELECT * FROM users WHERE id = :userId";
+                departmentUsers.add(con.createQuery(sql2).addParameter("userId", userId).executeAndFetchFirst(User.class));
+            }
+        } catch (Sql2oException e) {
+            System.out.println(e);
+        }
+        return departmentUsers;
     }
 
 }
