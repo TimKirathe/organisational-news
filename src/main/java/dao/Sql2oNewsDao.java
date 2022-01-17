@@ -18,8 +18,11 @@ public class Sql2oNewsDao implements NewsDao {
     @Override
     public void save(News news) {
         try(Connection con = sql2o.open()) {
-            String sql = "INSERT INTO news (name, content, departmentId) VALUES (:name, :content, :departmentId)";
-            int id = (int) con.createQuery(sql).bind(news).executeUpdate().getKey();
+            String sql = "INSERT INTO news (name, content, departmentid) VALUES (:name, :content, :departmentId)";
+            int id = (int) con.createQuery(sql).bind(news)
+                    .addParameter("name", news.getName())
+                    .addParameter("content", news.getContent())
+                    .addParameter("departmentId", news.getDepartmentId()).executeUpdate().getKey();
             news.setId(id);
         } catch (Sql2oException e) {
             System.out.println(e);

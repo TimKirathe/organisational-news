@@ -42,24 +42,15 @@ public class App {
             return gson.toJson(department);
         });
 
-        post("/news/new", "application/json", (req, res) ->{
+        //Post News to a department
+        post("/departments/:departmentId/news/new", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            Department department = departmentDao.findById(departmentId);
+            if(department == null) {
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("departmentId")));
+            }
             News news = gson.fromJson(req.body(), News.class);
-            newsDao.save(news);
-            res.status(201);
-            return gson.toJson(news);
-        });
-
-        post("/users/new", "application/json", (req, res) -> {
-            User user = gson.fromJson(req.body(), User.class);
-            userDao.save(user);
-            res.status(201);
-            return gson.toJson(user);
-        });
-
-        post("/departments/news", "application/json", (req, res) -> {
-            Department department = gson.fromJson(req.body(), Department.class);
-            departmentDao.save(department);
-            News news = gson.fromJson(req.body(), News.class);
+            news.setDepartmentId(departmentId);
             newsDao.save(news);
             departmentDao.saveNewsAndDepartment(department, news);
             res.status(201);
@@ -67,10 +58,15 @@ public class App {
             return gson.toJson(success);
         });
 
-        post("/departments/users", "application/json", (req, res) -> {
-            Department department = gson.fromJson(req.body(), Department.class);
-            departmentDao.save(department);
+        //Post User to a department
+        post("/departments/:departmentId/users/new", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            Department department = departmentDao.findById(departmentId);
+            if(department == null) {
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("departmentId")));
+            }
             User user = gson.fromJson(req.body(), User.class);
+            user.setDepartmentId(departmentId);
             userDao.save(user);
             departmentDao.saveUsersAndDepartment(department, user);
             res.status(201);
@@ -80,7 +76,7 @@ public class App {
 
         //GET METHODS
         get("/", "application/json", (req, res) -> {
-            CompanyNews companyNews1 = new CompanyNews("Moringa School Graduate Hired!", "After excelling in their Python Core course, a Moringa School graduate was hired by a leading software development company!");
+            CompanyNews companyNews1 = new CompanyNews("Moringa School Graduate Hired!", "After excelling in their Python Core course, a Moringa School graduate was hired by our company!");
             CompanyNews companyNews2 = new CompanyNews("Training Bootcamp!", "Breaking News as CEO of Scrub Daddy announces that there will be a mandatory training bootcamp for all employees!");
             CompanyNews companyNews3 = new CompanyNews("Entire Sales Department", "The entire sales department fired after a record low sales for the past three months");
             CompanyNews companyNews4 = new CompanyNews("Expansion coming!", "Scrub Daddy set to expand to the continents of Africa and Asia");
@@ -130,8 +126,8 @@ public class App {
         });
 
         //All news belonging to a department.
-        get("/departments/:id/news", "application/json", (req, res) -> {
-            int id = Integer.parseInt(req.params("id"));
+        get("/departments/:departmentId/news", "application/json", (req, res) -> {
+            int id = Integer.parseInt(req.params("departmentId"));
             List<News> savedNews = departmentDao.getAllDepartmentNews(id);
             if(savedNews == null) {
                 throw new ApiException(404, String.format("No news has been saved to the department with the id: \"%s\"", req.params("id")));
@@ -140,8 +136,8 @@ public class App {
         });
 
         //All users belonging to a department.
-        get("departments/:id/users", "application/json", (req, res) -> {
-            int id = Integer.parseInt(req.params("id"));
+        get("departments/:departmentId/users", "application/json", (req, res) -> {
+            int id = Integer.parseInt(req.params("departmentId"));
             List<User> savedUsers = departmentDao.getAllDepartmentUsers(id);
             if(savedUsers == null) {
                 throw new ApiException(404, String.format("No users have been saved to the department with the id: \"%s\"", req.params("id")));
