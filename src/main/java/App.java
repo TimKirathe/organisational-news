@@ -101,7 +101,7 @@ public class App {
            return gson.toJson(departmentDao.getAll());
         });
 
-
+        //Get all created users.
         get("/users", "application/json", (req, res) -> {
             if(userDao.getAll().size() == 0) {
                 String noData = "Sorry, there are no users that have been created yet";
@@ -110,6 +110,7 @@ public class App {
             return gson.toJson(userDao.getAll());
         });
 
+        //Get all created news.
         get("/news", "application/json", (req, res) -> {
             if(newsDao.getAll().size() == 0) {
                 String noData = "Sorry, no news has been created yet";
