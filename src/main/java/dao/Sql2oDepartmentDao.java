@@ -118,4 +118,26 @@ public class Sql2oDepartmentDao implements DepartmentDao {
         return departmentUsers;
     }
 
+    @Override
+    public void clearAllNewsAndDepartments() {
+        String sql1 = "TRUNCATE TABLE departments_news";
+        String sql2 = "ALTER SEQUENCE departments_news_id_seq RESTART";
+        try(Connection con = sql2o.open()) {
+            con.createQuery(sql1).executeUpdate();
+            con.createQuery(sql2).executeUpdate();
+        } catch (Sql2oException e) {
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public void clearAllUsersAndDepartments() {
+        String sql1 = "TRUNCATE TABLE departments_users";
+        String sql2 = "ALTER SEQUENCE departments_users_id_seq RESTART";
+        try(Connection con = sql2o.open()) {
+            con.createQuery(sql1).executeUpdate();
+            con.createQuery(sql2).executeUpdate();
+        }
+    }
+
 }

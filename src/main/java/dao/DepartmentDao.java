@@ -21,4 +21,6 @@ public interface DepartmentDao {
 
     //DESTROY
     void clearAll();
+    void clearAllNewsAndDepartments();
+    void clearAllUsersAndDepartments();
 }
