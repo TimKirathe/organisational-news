@@ -1,6 +1,2 @@
-TRUNCATE TABLE departments;
-TRUNCATE TABLE users;
-TRUNCATE TABLE news;
-ALTER SEQUENCE departments_id_seq RESTART;
-ALTER SEQUENCE users_id_seq RESTART;
-ALTER SEQUENCE news_id_seq RESTART;
+DROP DATABASE organisational_news;
+DROP DATABASE organisational_news_test;
