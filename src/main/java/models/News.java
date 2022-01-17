@@ -38,6 +38,10 @@ public class News {
         return departmentId;
     }
 
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
