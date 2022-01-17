@@ -6,7 +6,6 @@ public class CompanyNews {
 
     private String name;
     private String description;
-    private int id;
 
     public CompanyNews(String name, String description) {
         this.name = name;
@@ -15,14 +14,6 @@ public class CompanyNews {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -42,12 +33,12 @@ public class CompanyNews {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CompanyNews that = (CompanyNews) o;
-        return id == that.id && name.equals(that.name) && description.equals(that.description);
+        return name.equals(that.name) && description.equals(that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id);
+        return Objects.hash(name, description);
     }
 }
 
